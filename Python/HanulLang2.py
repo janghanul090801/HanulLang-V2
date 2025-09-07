@@ -8,9 +8,11 @@ __reading = 0 # 읽고있는 코드 인덱스
 # 한울랭 실행
 def run(code: str) -> None:
     global __vars, __codeList, __reading
-
+    code = __removeComments(code)
     __codeList = code.split("\n")
-
+    # return code
+    
+    
     # 시작-끝 조건 확인
     if not((__codeList[0] == "대체 누가") and __codeList[-1] == "디미고를 서류로 떨어짐?"):
         print("대체 누가 한울랭을 이렇게 써버림?")
@@ -42,6 +44,17 @@ def printVars() -> None:
 
 
 # [ Private Functions ]
+def __removeComments(code: str) -> str:
+    result = ""
+    isComment = False
+    for char in code:
+        if char == "#":
+            isComment = True
+        elif char == "\n":
+            isComment = False
+        if not(isComment): result += char
+    
+    return result
 
 # 여러 문자가 문자열 안에 있는지 확인
 def __isIn(checkings: list, target: str) -> bool:
