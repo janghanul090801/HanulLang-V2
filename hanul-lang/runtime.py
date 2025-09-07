@@ -104,6 +104,8 @@ class janghanul:
             return "PRINTCHAR"
         if "탈선린" in code:
             return "END"
+        if "30실점" in code:
+            return "JUMP"
         return None
     def stripComment(self, line: str) -> str:
         # '#' 또는 'ㅋㅋ' 나오면 그 뒤로 다 버림
@@ -204,6 +206,13 @@ class janghanul:
                     r = self.compileLine(else_code)
                     return r if isinstance(r, int) else None
                 return None
+        elif TYPE == "JUMP":
+            expr = code.replace("30실점", "", 1).strip()
+            try:
+                target = int(expr)
+            except ValueError:
+                raise ValueError(f"{expr}도 에겐같이 하네;;")
+            return target
 
         elif TYPE == "END":
             raise SystemExit("\n탈선린해도 디미는 못간다 한울한울아")
