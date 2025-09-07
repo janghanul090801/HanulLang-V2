@@ -17,6 +17,7 @@ def run(code: str) -> None:
         return -1
     __codeList = __codeList[1:-1] # 시작 끝 제거
 
+    # 코드 읽기
     while __reading < len(__codeList):
         tokens = __codeList[__reading].split(" ")
         command = tokens[0]
@@ -39,6 +40,7 @@ def calculate(token: str) -> int:
 def printVars() -> None:
     print(__vars)
 
+
 # [ Private Functions ]
 
 # 여러 문자가 문자열 안에 있는지 확인
@@ -55,42 +57,62 @@ def __createVar(varName: str, value: int) -> None:
         for _ in range(len(__vars) - varIndex + 1): __vars.append(None)
     __vars[varIndex] = value
 
+# 숫자 계산하는거
 def __calculate(tokens: list[str]) -> int:
+    """
+    호[.]*엥.* : 호에엥 - count(".")
+    하[.]*와.* : 하와와 + count(".")
+
+    "훌쩍"이 하나라도 있으면 십진수 표기법으로, 없으면 곱셈 표기법으로 계산함.
+
+    [훌쩍, 호에엥, 하와와] 세 개에서 판단 안되는 토큰은 에러로 처리함.
+    """
     if len(tokens) == 0: raise Exception(f"숫자가 없음 {tokens}")
     
     isDecimal = False
-    isPositive = True
-    resultValue = 1
-    
-    if "훌쩍" in tokens: 
-        isDecimal = True
-        resultValue = ""
+    value = None
+    resultValue = 1 # return값
     
     for token in tokens:
+        if token == "훌쩍":
+            isDecimal = True
+
         # 양수
-        if __isIn(list("호엥"), token):
-            value = len(token) - token.count(".") * 2
+        elif __isIn(list("호엥"), token):
+            term = len(token) - token.count(".") * 2 # 수학에서 "항" 뜻함
             if isDecimal:
-                if value >= 0: resultValue += str(value)
+                value = str(value)
+                if term < 0:
+                    value += str(term * -1)
+                    value = int(value) * -1
                 else:
-                    resultValue += str(value * -1)
-                    isPositive = not(isPositive)
+                    value += str(term)
+                    value = int(value)
+                isDecimal = False
             else:
-                resultValue *= value
+                if value != None:
+                    resultValue *= value
+                value = term
+
         # 음수
         elif __isIn(list("하와"), token):
-            value = -1 * len(token) + token.count(".") * 2
+            term = len(token) * -1 + token.count(".") * 2 # 수학에서 "항" 뜻함
             if isDecimal:
-                if value >= 0: resultValue += str(value)
+                value = str(value)
+                if term < 0:
+                    value += str(term * -1)
+                    value = int(value) * -1
                 else:
-                    resultValue += str(value * -1)
-                    isPositive = not(isPositive)
+                    value += str(term)
+                    value = int(value)
+                isDecimal = False
             else:
-                resultValue *= value
-        # 얜 뭘까
-        elif token == "훌쩍": pass
-        else: raise Exception(f"이건 숫자가 아님! : {token}")
-    
-    if isDecimal:
-        return int(resultValue) if isPositive else -1 * int(resultValue)
+                if value != None:
+                    resultValue *= value
+                value = term
+        
+        else:
+            raise Exception(f"이건 숫자가 아님 : {token}/{tokens}")
+    resultValue *= value
+
     return resultValue
