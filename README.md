@@ -17,7 +17,7 @@ cd HanulLang-V2
 pip install ./hanul-lang/python/
 ```
 
-# 설치확인하기
+## 설치확인하기
 
 ```shell
 hanul examples/helloworld.eagen
