@@ -2,6 +2,27 @@
 # HanulLang Ver.2
 엄랭에서 가져온 개념들로 만들었습니다.
 
+# 설치하기
+
+### rust
+```shell
+git clone https://github.com/TarkWonu/HanulLang-V2
+cd HanulLang-V2
+cargo install --path hanul-lang/rust/
+```
+### python
+```shell
+git clone https://github.com/TarkWonu/HanulLang-V2
+cd HanulLang-V2
+pip install ./hanul-lang/python/
+```
+
+# 설치확인하기
+
+```shell
+hanul examples/helloworld.eagen
+```
+
 
 # 문법
 ## 시작과 끝
