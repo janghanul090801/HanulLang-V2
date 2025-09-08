@@ -11,11 +11,7 @@ cd HanulLang-V2
 cargo install --path hanul-lang/rust/
 ```
 ### python
-```shell
-git clone https://github.com/TarkWonu/HanulLang-V2
-cd HanulLang-V2
-pip install ./hanul-lang/python/
-```
+
 
 ## 설치확인하기
 
