@@ -7,8 +7,5 @@ name = "hanul"   # pip install hanul
 version = "0.1.0"
 readme = "README.md"
 
-[project.urls]
-Homepage = "https://github.com/yourname/eungyo-lang"
-
 [project.scripts]
 hanul = "hanul.cli:main"
