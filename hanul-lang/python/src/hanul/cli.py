@@ -10,7 +10,7 @@ import subprocess
 class CliCommand(Enum):
     RUN = 'run'
     VERSION = 'version'
-    DIMI = 'dimi'           # 탈락 출력하고 종료
+    DIMI = 'dimi'
     HELP = 'help'
     DOC = 'doc'     # README.md 출력
     KILL = 'kill'   # pip uninstall hanul
@@ -48,7 +48,29 @@ def main():
             print("떨")
             sys.exit(1)
         case CliCommand.HELP.value:
-            pass
+            if len(sys.argv) < 3:
+                print("Need argument")
+                sys.exit(1)
+
+            command = sys.argv[2]
+            if command not in [c.value for c in CliCommand]:
+                print(f"unknown command : {command}")
+                sys.exit(1)
+
+            print("usage: ", end="")
+            match command:
+                case CliCommand.RUN.value:
+                    print("hanul run [file].eagen")
+                    print("[file].eagen 을 실행합니다")
+                case CliCommand.VERSION.value:
+                    print("hanul version")
+                    print("현재 버전을 출력합니다")
+                case CliCommand.DOC.value:
+                    print("hanul doc")
+                    print("README.md 문서를 출력합니다")
+                case CliCommand.KILL.value:
+                    print("hanul kill")
+                    print("죽입니다(pip uninstall hanul)")
         case CliCommand.DOC.value:
             console = Console()
             readme_text = files("hanul").joinpath("README.md").read_text(encoding="utf-8")
@@ -63,7 +85,7 @@ def main():
             print(result.stderr)
 
         case _:
-            print("unknown command")
+            print(f"unknown command : {command}")
             sys.exit(1)
 
 if __name__ == '__main__':
